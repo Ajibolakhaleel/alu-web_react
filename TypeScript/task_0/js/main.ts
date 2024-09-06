@@ -2,54 +2,41 @@ interface Student {
     firstName: string;
     lastName: string;
     age: number;
-    location: string
+    location: string;
 }
 
-const student1: Student = {
-    firstName: 'John',
-    lastName: 'Doe',
-    age: 20,
-    location: 'New York'
-}
-const student2 = {
-    firstName: 'Jane',
-    lastName: 'Doe',
-    age: 21,
-    location: 'New York'
-}
-
+const student1: Student = { firstName: "Amos", lastName: "Lane", age: 20, location: "Kampala" };
+const student2: Student = { firstName: "Alfred", lastName: "Smart", age: 19, location: "Kigali" };
 const studentsList: Student[] = [student1, student2];
 
 // Create a table element
 const table = document.createElement('table');
 
-// Create a header row
+// Create and append the table header
+const thead = document.createElement('thead');
 const headerRow = document.createElement('tr');
 const headers = ['First Name', 'Last Name', 'Age', 'Location'];
-headers.forEach(header => {
+  
+headers.forEach(headerText => {
     const th = document.createElement('th');
-    th.textContent = header;
+    th.textContent = headerText;
     headerRow.appendChild(th);
 });
-
-// Append the header row to the table
-table.appendChild(headerRow);
-
-// Create a row for each student
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+  
+// Create and append the table body
+const tbody = document.createElement('tbody');
 studentsList.forEach(student => {
-    const row: HTMLTableRowElement = document.createElement('tr');
-    const studentValues: string[] = Object.values(student);
-    studentValues.forEach(value => {
-        const td: HTMLTableDataCellElement = document.createElement('td');
-        td.textContent = value.toString();
-        row.appendChild(td);
-    });
-    table.appendChild(row);
+    const row = document.createElement('tr');
+    row.insertCell().textContent = student.firstName;
+    row.insertCell().textContent = student.lastName;
+    row.insertCell().textContent = student.age.toString(); // Convert age to string for textContent
+    row.insertCell().textContent = student.location;
+    tbody.appendChild(row);
 });
 
-// Append the table to the body
+table.appendChild(tbody);
+
+// Append the table to the document body
 document.body.appendChild(table);
-
-
-
-
