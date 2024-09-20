@@ -1,12 +1,8 @@
-:root {
-    --main-color: #e01d3f;
+.App-body {
+    flex: 1;
+    padding-left: 60px;
   }
-  
-  .login {
-    margin: 50px;
-  }
-  .login input {
-    margin-left: 20px;
-    margin-right: 20px;
+  .App-body p, .App-footer p {
+    font-size: 32px;
   }
   

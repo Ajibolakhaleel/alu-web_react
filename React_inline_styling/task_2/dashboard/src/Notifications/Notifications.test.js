@@ -1,36 +1,44 @@
-import { shallow, mount } from "enzyme";
-import React from "react";
+import { getLatestNotifications } from "../utils/utils";
 import Notifications from "./Notifications";
+import { render, screen } from "@testing-library/react";
 import { StyleSheetTestUtils } from "aphrodite";
 
-describe("<Notifications />", () => {
-  let listNotifications;
+StyleSheetTestUtils.suppressStyleInjection()
 
-  beforeAll(() => {
-    StyleSheetTestUtils.suppressStyleInjection();
+describe("Notifications tests", () => {
+  it("should render the corrent message when there not notification", () => {
+    render(<Notifications />);
+    expect(screen.getAllByRole("listitem")).toHaveLength(1);
   });
-
-  afterAll(() => {
-    StyleSheetTestUtils.clearBufferAndResumeStyleInjection();
-  });
-
-  beforeEach(() => {
-    listNotifications = [
+  it("should render all notifications", () => {
+    const listNotifications = [
       { id: 1, type: "default", value: "New course available" },
       { id: 2, type: "urgent", value: "New resume available" },
-      { id: 3, type: "urgent", html: { __html: "<strong>Urgent requirement</strong>" } }
+      { id: 3, type: "urgent", html: getLatestNotifications() },
     ];
+    render(<Notifications listNotifications={listNotifications} />);
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
   });
 
-  it("renders without crashing", () => {
-    const wrapper = shallow(<Notifications />);
-    expect(wrapper.exists()).toEqual(true);
+  it("should render the corrent text", () => {
+    render(<Notifications />);
+    screen.getByText("Here is the list of notifications");
   });
 
-  it("renders the correct number of notifications", () => {
-    const wrapper = mount(<Notifications displayDrawer listNotifications={listNotifications} />);
-    expect(wrapper.find("NotificationItem").length).toBe(3);
-  });
+  it("should update component when listNotifications prop changes", () => {
+    const listNotifications = [
+      { id: 1, type: "default", value: "New course available" },
+      { id: 2, type: "urgent", value: "New resume available" },
+    ];
+    const { rerender } = render(<Notifications listNotifications={listNotifications} />);
+    expect(screen.getAllByRole("listitem")).toHaveLength(2);
 
-  // Add more tests as needed...
+    const updatedListNotifications = [
+      { id: 1, type: "default", value: "New course available" },
+      { id: 2, type: "urgent", value: "New resume available" },
+      { id: 3, type: "urgent", value: "New notification" },
+    ];
+    rerender(<Notifications listNotifications={updatedListNotifications} />);
+    expect(screen.getAllByRole("listitem")).toHaveLength(3);
+  });
 });

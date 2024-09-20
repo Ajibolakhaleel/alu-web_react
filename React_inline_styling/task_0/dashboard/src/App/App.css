@@ -1,12 +1,5 @@
-:root {
-  --main-color: #e01d3f;
-}
-
-.App {
-  border-bottom: 3px solid var(--main-color);
-}
-
-.App-body {
+.app {
   display: flex;
-  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
 }

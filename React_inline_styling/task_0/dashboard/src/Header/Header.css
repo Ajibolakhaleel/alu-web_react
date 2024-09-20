@@ -1,16 +1,14 @@
-:root {
-    --main-color: #e01d3f;
-  }
-  
-  .header {
+.App-header {
     display: flex;
+    gap: 40px;
     align-items: center;
-    color: var(--main-color);
-    font-size: 20px;
-    border-bottom: 3px solid var(--main-color);
+    border-bottom: 4px solid red;
+    margin-bottom: 40px;
   }
-  
-  .header img {
-    width: 200px;
+  .App-header h1 {
+    color: red;
+    font-size: 60px;
   }
-  
+  .App-header img {
+    height: 300px;
+  }

@@ -1,14 +1,26 @@
-// NotificationItem.test.js
 import React from "react";
-import { shallow } from "enzyme";
 import NotificationItem from "./NotificationItem";
+import { render, screen } from "@testing-library/react";
 
-describe("NotificationItem Component", () => {
-  it("should call markAsRead function with the right ID on click", () => {
-    const id = 1;
-    const spy = jest.fn();
-    const wrapper = shallow(<NotificationItem id={id} markAsRead={spy} />);
-    wrapper.find("li").simulate("click");
-    expect(spy).toHaveBeenCalledWith(id);
-  });
+
+describe("Notification item", () => {
+    it("should render the notification item", () => {
+        render(<NotificationItem value="hello world" />);
+        screen.getByText(/hello world/i);
+
+    });
+
+    it("should render the correct when inner html is provided", () => {
+        render(<NotificationItem html="<strong>hello world</strong>" />);
+        screen.getByText(/hello world/i);
+    })
+
+    it("should call the markAsRead function when clicked", () => {
+        const mockMarkAsRead = jest.fn();
+        render(<NotificationItem markAsRead={mockMarkAsRead} value="hello world" />);
+        screen.getByText(/hello world/i).click();
+        expect(mockMarkAsRead).toHaveBeenCalled();
+    });
 });
+
+

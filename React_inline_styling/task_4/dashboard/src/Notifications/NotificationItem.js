@@ -1,60 +1,23 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { StyleSheet, css } from "aphrodite";
+import React, { memo } from 'react';
+import { StyleSheet, css } from 'aphrodite/no-important';
 
-class NotificationItem extends React.PureComponent {
-  render() {
-    const { type, value, html, markAsRead, id } = this.props;
+function NotificationItem({ type, value, html, markAsRead, id }) {
+  if (html) {
     return (
-      <>
-        {type && value ? (
-          <li className={type === "default" ? css(styles.default) : css(styles.urgent)} onClick={() => markAsRead(id)} data-notification-type={type}>
-            {value}
-          </li>
-        ) : null}
-        {html ? <li onClick={() => markAsRead(id)} data-urgent className={css(styles.urgent)} dangerouslySetInnerHTML={{ __html: html }}></li> : null}
-      </>
+      <li className={css(type === "urgent" ? styles.urgentListItem : styles.listItem)} onClick={() => markAsRead(id)} data-priority={type} dangerouslySetInnerHTML={{ __html: html }}></li>
     );
+  } else {
+    return <li className={css(type === "urgent" ? styles.urgentListItem : styles.listItem)} onClick={() => markAsRead(id)} data-priority={type}>{value}</li>;
   }
 }
 
 const styles = StyleSheet.create({
-  default: {
+  listItem: {
     color: "blue",
-    "@media (max-width: 375px)": {
-      borderBottom: "1px solid black",
-      listStyle: "none",
-      fontSize: "20px",
-      padding: "10px 8px",
-    },
   },
-  urgent: {
+  urgentListItem: {
     color: "red",
-    "@media (max-width: 375px)": {
-      borderBottom: "1px solid black",
-      listStyle: "none",
-      fontSize: "20px",
-      padding: "10px 8px",
-    },
-  },
+  }
 });
 
-NotificationItem.propTypes = {
-  type: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  __html: PropTypes.shape({
-    html: PropTypes.string,
-  }),
-  markAsRead: PropTypes.func,
-  id: PropTypes.number,
-};
-
-NotificationItem.defaultProps = {
-  type: "default",
-  markAsRead: () => {
-    console.log("empty func");
-  },
-  id: 0,
-};
-
-export default NotificationItem;
+export default memo(NotificationItem);
