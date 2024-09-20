@@ -12,7 +12,6 @@ import { getLatestNotification } from '../utils/utils';
 
 class App extends React.Component {
   render() {
-    // instantiate vars from props
     const { isLoggedIn } = this.props;
 
     const listCourses = [

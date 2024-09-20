@@ -1,39 +1,33 @@
-import React from "react";
-import "./Notifications.css";
+// NotificationItem.js
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 
-class NotificationItem extends React.PureComponent {
-  render() {
-    const { type, value, html, markAsRead, id } = this.props;
-    return (
-      <>
-        {type && value ? (
-          <li onClick={() => markAsRead(id)} data-notification-type={type}>
-            {value}
-          </li>
-        ) : null}
-        {html ? <li onClick={() => markAsRead(id)} data-urgent dangerouslySetInnerHTML={{ __html: html }}></li> : null}
-      </>
-    );
-  }
-}
+const NotificationItem = ({ type, value, html, id, markAsRead }) => {
+  const handleClick = () => {
+    markAsRead(id);
+  };
 
-NotificationItem.propTypes = {
-  type: PropTypes.string.isRequired,
-  value: PropTypes.string,
-  __html: PropTypes.shape({
-    html: PropTypes.string,
-  }),
-  markAsRead: PropTypes.func,
-  id: PropTypes.number,
+  return (
+    <li onClick={handleClick} data-notification-type={type}>
+      {value ? value : <span dangerouslySetInnerHTML={html}></span>}
+    </li>
+  );
 };
 
 NotificationItem.defaultProps = {
   type: "default",
-  markAsRead: () => {
-    console.log("empty func");
-  },
-  id: 0,
+  value: "",
+  html: {},
 };
 
-export default NotificationItem;
+NotificationItem.propTypes = {
+  type: PropTypes.string,
+  value: PropTypes.string,
+  html: PropTypes.shape({
+    __html: PropTypes.string,
+  }),
+  id: PropTypes.number.isRequired,
+  markAsRead: PropTypes.func.isRequired,
+};
+
+export default memo(NotificationItem);
